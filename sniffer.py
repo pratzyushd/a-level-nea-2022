@@ -3,7 +3,7 @@ import socket
 import os
 import argparse as ap
 
-# Class definitions
+# ====================== CLASS DEFINITIONS ===================================
 class Header():
     def __init__(self, content):
        self._content = content.hex()
@@ -106,18 +106,26 @@ class Data(Header):
         super().__init__(content)
         self._content = self._content[132:]
 
+# ================ PARSING ARGS FROM TERMINAL ================================
 
-# Main sniffer program
-#sock = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.ntohs(0x0003))
-sock = socket.socket(socket.AF_PACKET, socket.SOCK_RAW, socket.htons(0x0800))
-#sock = socket.socket(socket.AF_INET, socket.SOCK_RAW)
-
-# Take in IP address to filter for
+# Generate hex equivalent of IP address to filter for
 # TODO: This needs to be changed to receive the actual IP address from the command line
+# using the argparse module
 ip_to_filter = "127.0.0.1"
 ip_split = ip_to_filter.split(".")
-# Using the .format function, convert the IP address into the hex equivalent
-hex_ip_to_filter = "{:02X}{:02X}{:02X}{:02X}".format(*map(int, ip_split))
+# Using f strings and the map function, convert the IP address into the hex equivalent
+hex_ip_to_filter = ''.join(f"{i:02x}" for i in map(int,ip_split))
+
+# Identify file name based on time passed in through the terminal
+parser = ap.ArgumentParser()
+parser.add_argument("-f", "--file-name", type=str, help="File name for output")
+args = parser.parse_args()
+file_name = args.file_name+".txt"
+
+# =================== MAIN SNIFFER PROGRAM ===================================
+
+# Create socket
+sock = socket.socket(socket.AF_PACKET, socket.SOCK_RAW, socket.htons(0x0800))
 
 # Create lists to store the header objects
 eth_header_list = list()
@@ -125,33 +133,28 @@ ip_header_list = list()
 tcp_header_list = list()
 data_list = list()
 
-# Create file name based on time passed in from script call
-parser = ap.ArgumentParser()
-parser.add_argument("-f", "--file-name", type=str, help="File name for output")
-args = parser.parse_args()
-file_name = args.file_name+".txt"
-print(file_name)
-
 # Receiving data from raw socket
-# TODO: change the value from just collecting 5 packets to an appropriate
-# number
-# Could use the IPHeader class and the get_source_ip method to stop after one
-# packet from appropriate source is collected
-for i in range(5):
+# This continues to receive data until a packet with the right source IP
+# is found, which is then saved into the list
+# TODO: modify to check both the src and dest IPs (if in src then request, if
+# in dest then response)
+packet_found = False
+while not packet_found:
     packet = sock.recvfrom(65536)[0]
-    eth_header_list.append(EthHeader(packet))
-    ip_header_list.append(IPHeader(packet))
-    tcp_header_list.append(TCPHeader(packet))
-    data_list.append(Data(packet))
+    if IPHeader(packet).get_source_ip_addr() == hex_ip_to_filter:
+        eth_header_list.append(EthHeader(packet))
+        ip_header_list.append(IPHeader(packet))
+        tcp_header_list.append(TCPHeader(packet))
+        data_list.append(Data(packet))
+        packet_found = True
+        print("Packet sniffed")
 
 # Writing to output file
 with open(r"output_files/"+file_name, "w") as f:
     num_to_write = len(eth_header_list)
+    # Entire header written to file, as processing is done by the subroutines
+    # called in the main app.py
     for i in range(0, num_to_write):
-        #if ip_header_list[i].get_source_ip_addr() == hex_ip_to_filter:
-            # Currently just writing entire headers into file
-            # This can be changed down the line to be section by section / with
-            # labels etc
         f.write(eth_header_list[i].get_content() + os.linesep)
         f.write(ip_header_list[i].get_content() + os.linesep)
         f.write(tcp_header_list[i].get_content() + os.linesep)
