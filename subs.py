@@ -38,6 +38,11 @@ def decode_tcp_header(header_contents):
         return None
 
 def decode_packet_data(packet_contents):
-    # Write function to decode the data into Unicode / ASCII equivalent
-    pass
+    if len(packet_contents) > 0:
+        output_dict = {}
+        # TODO: write the actual decoding algorithm here
+        output_dict["data"] = packet_contents
+        return output_dict
+    else:
+        return None
 
