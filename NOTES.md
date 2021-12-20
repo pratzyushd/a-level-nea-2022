@@ -2,9 +2,9 @@
 
 ## To Do
 
-- [ ] Currently takes the first packet that is collected, should look at taking
+- [x] Currently takes the first packet that is collected, should look at taking
       one with the correct IP address only (`sniffer.py`)
-- [ ] Create subroutine to decode packet data (`subs.py`)
+- [x] Create subroutine to decode packet data (`subs.py`)
 - [ ] Create separate file for classes of headers and data
   - Load headers from file into classes in python script?
   - Remove classes entirely from sniffer, and only do string slicing for packets
