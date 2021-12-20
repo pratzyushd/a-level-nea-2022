@@ -1,3 +1,5 @@
+import codecs
+
 def decode_eth_header(header_contents):
     if len(header_contents) == 28:
         output_dict = {}
@@ -41,7 +43,8 @@ def decode_packet_data(packet_contents):
     if len(packet_contents) > 0:
         output_dict = {}
         # TODO: write the actual decoding algorithm here
-        output_dict["data"] = packet_contents
+        decoded = codecs.decode(packet_contents, "hex").decode("utf-8")
+        output_dict["data"] = decoded
         return output_dict
     else:
         return None
