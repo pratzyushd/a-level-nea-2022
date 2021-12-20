@@ -3,7 +3,7 @@ import socket
 import os
 import argparse as ap
 
-# ====================== CLASS DEFINITIONS ===================================
+# ====================== CLASS DEFINITIONS ====================================
 class Header():
     def __init__(self, content):
        self._content = content.hex()
@@ -106,7 +106,7 @@ class Data(Header):
         super().__init__(content)
         self._content = self._content[132:]
 
-# ================ PARSING ARGS FROM TERMINAL ================================
+# ================ PARSING ARGS FROM TERMINAL =================================
 
 # Generate hex equivalent of IP address to filter for
 # TODO: This needs to be changed to receive the actual IP address from the command line
@@ -122,7 +122,7 @@ parser.add_argument("-f", "--file-name", type=str, help="File name for output")
 args = parser.parse_args()
 file_name = args.file_name+".txt"
 
-# =================== MAIN SNIFFER PROGRAM ===================================
+# =================== MAIN SNIFFER PROGRAM ====================================
 
 # Create socket
 sock = socket.socket(socket.AF_PACKET, socket.SOCK_RAW, socket.htons(0x0800))
@@ -159,5 +159,3 @@ with open(r"output_files/"+file_name, "w") as f:
         f.write(ip_header_list[i].get_content() + os.linesep)
         f.write(tcp_header_list[i].get_content() + os.linesep)
         f.write(data_list[i].get_content() + os.linesep)
-
-print("Completed")
