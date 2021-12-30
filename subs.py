@@ -1,8 +1,10 @@
 import codecs
 
 def decode_eth_header(header_contents):
-    if len(header_contents) == 28:
+    print(len(header_contents))
+    if len(header_contents) == 29:
         output_dict = {}
+        output_dict["full_contents"] = header_contents
         output_dict["src_mac_addr"] = header_contents[0:12]
         output_dict["dest_mac_addr"] = header_contents[12:24]
         output_dict["type"] = header_contents[24:28]
@@ -11,8 +13,9 @@ def decode_eth_header(header_contents):
         return None
 
 def decode_ip_header(header_contents):
-    if len(header_contents) == 40:
+    if len(header_contents) == 41:
         output_dict = {}
+        output_dict["full_contents"] = header_contents
         output_dict["ip_version"] = header_contents[0:1]
         output_dict["ip_header_len"] = header_contents[1:2]
         output_dict["service_type"] = header_contents[2:4]
@@ -27,8 +30,9 @@ def decode_ip_header(header_contents):
         return None
 
 def decode_tcp_header(header_contents):
-    if len(header_contents) == 36:
+    if len(header_contents) == 65:
         output_dict = {}
+        output_dict["full_contents"] = header_contents
         output_dict["source_port"] = header_contents[0:4]
         output_dict["dest_port"] = header_contents[4:8]
         output_dict["seq_num"] = header_contents[8:16]
@@ -42,8 +46,9 @@ def decode_tcp_header(header_contents):
 def decode_packet_data(packet_contents):
     if len(packet_contents) > 0:
         output_dict = {}
-        # TODO: write the actual decoding algorithm here
-        decoded = codecs.decode(packet_contents, "hex").decode("utf-8")
+        output_dict["full_contents"] = packet_contents
+        decoded = codecs.decode(packet_contents.strip(), "hex")
+        # decoded = codecs.decode(packet_contents.strip(), "hex").decode("utf-8")
         output_dict["data"] = decoded
         return output_dict
     else:
