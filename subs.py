@@ -2,7 +2,7 @@ import codecs
 
 def decode_eth_header(header_contents):
     print(len(header_contents))
-    if len(header_contents) == 29:
+    if len(header_contents) > 28:
         output_dict = {}
         output_dict["full_contents"] = header_contents
         output_dict["src_mac_addr"] = header_contents[0:12]
@@ -13,7 +13,7 @@ def decode_eth_header(header_contents):
         return None
 
 def decode_ip_header(header_contents):
-    if len(header_contents) == 41:
+    if len(header_contents) > 40:
         output_dict = {}
         output_dict["full_contents"] = header_contents
         output_dict["ip_version"] = header_contents[0:1]
@@ -30,7 +30,7 @@ def decode_ip_header(header_contents):
         return None
 
 def decode_tcp_header(header_contents):
-    if len(header_contents) == 65:
+    if len(header_contents) > 64:
         output_dict = {}
         output_dict["full_contents"] = header_contents
         output_dict["source_port"] = header_contents[0:4]
