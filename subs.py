@@ -20,11 +20,19 @@ def decode_ip_header(header_contents):
         output_dict["ip_header_len"] = header_contents[1:2]
         output_dict["service_type"] = header_contents[2:4]
         output_dict["datagram_len"] = header_contents[4:8]
+        output_dict["datagram_len_decoded"] = decode_hex(output_dict[
+            "datagram_len"])
         output_dict["time_to_live"] = header_contents[16:18]
+        output_dict["time_to_live_decoded"] = decode_hex(output_dict[
+            "time_to_live"])
         output_dict["transport_protocol"] = header_contents[18:20]
         output_dict["ip_header_checksum"] = header_contents[20:24]
         output_dict["source_ip_addr"] = header_contents[24:32]
+        output_dict["source_ip_addr_decoded"] = decode_ip_address(
+                output_dict["source_ip_addr"])
         output_dict["dest_ip_addr"] = header_contents[32:40]
+        output_dict["dest_ip_addr_decoded"] = decode_ip_address(
+                output_dict["dest_ip_addr"])
         return output_dict
     else:
         return None
@@ -48,9 +56,24 @@ def decode_packet_data(packet_contents):
         output_dict = {}
         output_dict["full_contents"] = packet_contents
         decoded = codecs.decode(packet_contents.strip(), "hex")
-        # decoded = codecs.decode(packet_contents.strip(), "hex").decode("utf-8")
         output_dict["data"] = decoded
+        output_dict["data_decoded"] = decode_hex(output_dict[
+            "data"], True)
         return output_dict
     else:
         return None
 
+def decode_hex(data, text=False):
+    decoded = None
+    if text:
+        data = data.hex()
+        decoded = codecs.decode(data.strip(), "hex").decode("utf-8")
+    else:
+        decoded = int(data, 16)
+    return decoded
+
+def decode_ip_address(hex_string):
+    chunks = [hex_string[i:i+2] for i in range(0,len(hex_string),2)]
+    decoded_list = [str(int(i, 16)) for i in chunks]
+    decoded_string = ".".join(decoded_list)
+    return decoded_string
