@@ -1,7 +1,6 @@
 import codecs
 
 def decode_eth_header(header_contents):
-    print(len(header_contents))
     if len(header_contents) > 28:
         output_dict = {}
         output_dict["full_contents"] = header_contents
