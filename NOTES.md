@@ -9,6 +9,7 @@
   "packet 1: SYN", "packet 5: User Agent Sent" etc
   - [ ] Drop down in each packet for the various headers
   - [ ] Further information / translation on hover?
+    - [ ] Information about section and function, byte offset
     - [ ] For HTTP packet data, click to switch between translated version
         and hex representation?
       - Requires use of JS .onclick() function?
