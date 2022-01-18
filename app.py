@@ -43,10 +43,10 @@ def a_level():
     packet_data = list()
     # Go through contents of file and decode each relevant header
     for i in range (0, len(contents), 4):
-        eth_header = subs.decode_eth_header(contents[i])
-        ip_header = subs.decode_ip_header(contents[i+1])
-        tcp_header = subs.decode_tcp_header(contents[i+2])
-        packet_data = subs.decode_packet_data(contents[i+3])
+        eth_header.append(subs.decode_eth_header(contents[i]))
+        ip_header.append(subs.decode_ip_header(contents[i+1]))
+        tcp_header.append(subs.decode_tcp_header(contents[i+2]))
+        packet_data.append(subs.decode_packet_data(contents[i+3]))
 
     # Pass the various headers and packet data to the template
     return render_template("a-level.html", eth = eth_header, ip = ip_header,
