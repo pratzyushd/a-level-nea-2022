@@ -11,7 +11,9 @@
   - [ ] Further information / translation on hover?
     - [ ] For HTTP packet data, click to switch between translated version
         and hex representation?
+      - Requires use of JS .onclick() function?
 - [ ] Front end work
+  - [ ] Add CSS beautification
 
 ### Completed
 
