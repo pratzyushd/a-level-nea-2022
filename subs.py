@@ -50,7 +50,7 @@ def decode_tcp_header(header_contents):
     else:
         return None
 
-def decode_packet_data(packet_contents):
+def denode_http_data(packet_contents):
     if len(packet_contents) > 0:
         output_dict = {}
         output_dict["full_contents"] = packet_contents
