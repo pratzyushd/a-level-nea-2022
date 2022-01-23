@@ -6,13 +6,13 @@
 
 - [ ] Collapsible sections for entire transaction
   - [ ] Drop down for each packet, with general description in the title e.g.
-  "packet 1: SYN", "packet 5: User Agent Sent" etc
+  "packet 1: SYN" (primarily only showing SYN, ACK and FIN)
   - [ ] Drop down in each packet for the various headers
   - [ ] Further information / translation on hover?
     - [ ] Information about section and function, byte offset
     - [ ] For HTTP packet data, click to switch between translated version
         and hex representation?
-      - Requires use of JS .onclick() function?
+      - Requires use of JS.onclick() function?
 - [ ] Front end work
   - [ ] Add CSS beautification
 
