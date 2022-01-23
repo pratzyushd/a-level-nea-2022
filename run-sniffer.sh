@@ -29,19 +29,21 @@ def split_http_data(contents):
 
 # ================ PARSING ARGS FROM TERMINAL =================================
 
-# Generate hex equivalent of IP address to filter for
-# TODO: This needs to be changed to receive the actual IP address from the command line
-# using the argparse module
-ip_to_filter = "127.0.0.1"
-ip_split = ip_to_filter.split(".")
-# Using f strings and the map function, convert the IP address into the hex equivalent
-hex_ip_to_filter = ''.join(f"{i:02x}" for i in map(int,ip_split))
-
 # Identify file name based on time passed in through the terminal
 parser = ap.ArgumentParser()
 parser.add_argument("-f", "--file-name", type=str, help="File name for output")
+parser.add_argument("-ip", "--ip-address", type=str, help="IP address to \
+        filter for when running sniffer")
 args = parser.parse_args()
 file_name = args.file_name+".txt"
+
+# Generate hex equivalent of IP address to filter for
+raw_ip = args.ip_address
+# Uses split function to split IP address into octets. Then use the map function
+# and f strings to convert it into the 8 digit hex equivalent address
+hex_ip_to_filter = ''.join(f"{i:02x}" for i in map(int,raw_ip.split(".")))
+print(hex_ip_to_filter)
+
 
 # =================== MAIN SNIFFER PROGRAM ====================================
 
