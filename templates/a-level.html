@@ -6,7 +6,10 @@
 
 <title>Transaction Details</title>
 
+<div class="left">
+
 <h1>Full Transaction From {{ client_ip }}</h1>
+
 
 {# Using Jinja to loop over all the headers in the list #}
 {% for i in range(0, eth|length) %}
@@ -15,37 +18,110 @@
 
 <button type="button" class="collapsible">Ethernet Header</button>
 <div class="content">
-    <packettext>{{ eth[i]["full_contents"] }}<packettext/>
+    <packtxt>{{ eth[i]["full_contents"] }}</packtxt>
 </div>
 <button type="button" class="collapsible">IP Header</button>
 <div class="content">
-    <packettext>{{ ip[i]["full_contents"] }}<packettext/>
+    <packtxt>{{ ip[i]["full_contents"] }}</packtxt>
 </div>
 <button type="button" class="collapsible">TCP Header</button>
 <div class="content">
-    <packettext>{{ tcp[i]["full_contents"] }}<packettext/>
+    <packtxt>{{ tcp[i]["full_contents"] }}</packtxt>
 </div>
 {# If the HTTP data is empty (i.e. no information), then change the collapsible's
 title and the contents to tell the user that. #}
 {% if http[i]["full_contents"]|length > 0 %}
 <button type="button" class="collapsible">HTTP Data</button>
 <div class="content">
-    <packettext>{{ http[i]["full_contents"] }}<packettext/>
+    <packtxt>{{ http[i]["full_contents"] }}</packtxt>
 </div>
 {% else %}
 <button type="button" class="collapsible">HTTP Data (NONE)</button>
 <div class="content">
-    <packettext>This packet is used for Transport layer communication (i.e. TCP)
-    and there is therefore no HTTP data present.</packettext>
+    <packtxt>This packet is used for Transport layer communication (i.e. TCP)
+    and there is therefore no HTTP data present.</packtxt>
 </div>
 {% endif %}
 {% endfor %}
 
+</div>
+
+<div class="right">
+
+    <h1>Explained and Translated</h1>
+
+    {% for i in range(0, eth|length) %}
+
+    <h3>{{ i+1 }}</h3>
+
+    <button type="button" class="collapsible">Ethernet Explained</button>
+    <div class="content">
+        <p><packtxt>{{ eth[i]["src_mac_addr"] }}</packtxt>: Source MAC address</p>
+        <p><packtxt>{{ eth[i]["dest_mac_addr"] }}</packtxt>: Destination MAC address</p>
+        <p><packtxt>{{ eth[i]["type"] }}</packtxt>: Packet type (0800 indicates IP)</p>
+    </div>
+    <button type="button" class="collapsible">IP Explained</button>
+    <div class="content">
+        <p><packtxt> {{ ip[i]["ip_version"] }}</packtxt>: IP version (i.e. IPv4 or IPv6)</p>
+        <p><packtxt> {{ ip[i]["ip_header_len"] }}</packtxt>: Length of the IP header in 4-bit chunks
+        (i.e. nibbles).</p>
+        <p><packtxt> {{ ip[i]["service_type"] }}</packtxt>: Differentiated Services Field (off-spec)
+        </p>
+        <p><packtxt> {{ ip[i]["datagram_len"] }} = {{ ip[i]["datagram_len_decoded"] }}</packtxt>:
+        Length of the datagram, i.e. application layer data, TCP header and IP header.</p>
+        <p><packtxt> {{ ip[i]["time_to_live"] }} = {{ ip[i]["time_to_live_decoded"] }}</packtxt>:
+        Time to live of packet (i.e. how long it can live before being discarded) expressed in seconds.</p>
+        <p><packtxt> {{ ip[i]["transport_protocol"] }}</packtxt>: Transport protocol used (
+        <packtxt>06</packtxt> shows TCP and <packtxt>17</packtxt> shows UDP).</p>
+        <p><packtxt> {{ ip[i]["ip_header_checksum"] }}</packtxt>: Checksum used for error checking of
+        the IP header. When a packet arrives at a router, the checksum is recalculated, and if they
+        don't match, the packet is discarded.</p>
+        <p><packtxt> {{ ip[i]["source_ip_addr"] }} = {{ ip[i]["source_ip_addr_decoded"] }}</packtxt>:
+        Source IP address of the packet.</p>
+        <p><packtxt> {{ ip[i]["dest_ip_addr"] }} = {{ ip[i]["dest_ip_addr_decoded"] }}</packtxt>:
+        Destination IP address of the packet.</p>
+    </div>
+    <button type="button" class="collapsible">TCP Explained</button>
+    <div class="content">
+        <!-- Fill in contents for TCP Header explanation here -->
+        <p><packtxt> {{ tcp[i]["source_port"] }}</packtxt>: Source port used for TCP traffic.</p>
+        <p><packtxt> {{ tcp[i]["dest_port"] }}</packtxt>: Destination port used for TCP traffic.</p>
+        <p><packtxt> {{ tcp[i]["seq_num"] }} = {{ tcp[i]["seq_num_decoded"] }}</packtxt>:
+        Sequence number. If the SYN flag is set, this sets the initial sequence number to be used as
+         the "zero". If the SYN flag is clear, this is the total number of bytes sent since the start
+        of the session.</p>
+        <p><packtxt> {{ tcp[i]["ack_num"] }} = {{ tcp[i]["ack_num_decoded"] }}</packtxt>:
+        Acknowledgement number. If the ACK flag is set, the acknowledgement number shows the next
+        expected sequence number.</p>
+        <p><packtxt> {{ tcp[i]["tcp_header_len"] }}</packtxt>: Length of the TCP header in 4 bit nibbles.</p>
+        <p><packtxt> {{ tcp[i]["tcp_header_checksum"] }}</packtxt>: TCP header checksum. Calculated using
+        TCP header contents and pseudo-IP header, as the IP header has not yet been generated. Pseudo-
+        header consists of source and destination IP addresses, the protocol number for TCP and the header
+        and payload lengths.</p>
+    </div>
+    {# If the HTTP data is empty (i.e. no information), then change the collapsible's
+    title and the contents to tell the user that. #}
+    {% if http[i]["full_contents"]|length > 0 %}
+    <button type="button" class="collapsible">HTTP Data Translated</button>
+    <div class="content">
+        <!-- Fill in contents for HTTP decoding -->
+        <p><packtxt>{{ http[i]["data_decoded"] }}</packtxt></p>
+    </div>
+    {% else %}
+    <button type="button" class="collapsible">HTTP Data Translated (NONE)</button>
+    <div class="content">
+        <packtxt>This packet is used for Transport layer communication (i.e. TCP)
+        and there is therefore no HTTP data present.</packtxt>
+    </div>
+    {% endif %}
+    {% endfor %}
+</div>
+
+
 <script>
 var collapsible = document.getElementsByClassName("collapsible");
-var i;
 
-for (i = 0; i < collapsible.length; i++) {
+for (var i = 0; i < collapsible.length; i++) {
   collapsible[i].addEventListener("click", function() {
     this.classList.toggle("active");
     var content = this.nextElementSibling;
