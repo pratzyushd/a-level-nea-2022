@@ -43,7 +43,11 @@ def decode_tcp_header(header_contents):
         output_dict["source_port"] = header_contents[0:4]
         output_dict["dest_port"] = header_contents[4:8]
         output_dict["seq_num"] = header_contents[8:16]
+        output_dict["seq_num_decoded"] = decode_hex(output_dict[
+            "seq_num"])
         output_dict["ack_num"] = header_contents[16:24]
+        output_dict["ack_num_decoded"] = decode_hex(output_dict[
+            "ack_num"])
         output_dict["tcp_header_len"] = header_contents[24:25]
         output_dict["tcp_header_checksum"] = header_contents[32:36]
         return output_dict
