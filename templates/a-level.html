@@ -38,7 +38,7 @@ title and the contents to tell the user that. #}
 {% else %}
 <button type="button" class="collapsible">HTTP Data (NONE)</button>
 <div class="content">
-    <packtxt>This packet is used for Transport layer communication (i.e. TCP)
+    <packtxt style="word-break: normal">This packet is used for Transport layer communication (i.e. TCP)
     and there is therefore no HTTP data present.</packtxt>
 </div>
 {% endif %}
@@ -83,7 +83,6 @@ title and the contents to tell the user that. #}
     </div>
     <button type="button" class="collapsible">TCP Explained</button>
     <div class="content">
-        <!-- Fill in contents for TCP Header explanation here -->
         <p><packtxt> {{ tcp[i]["source_port"] }}</packtxt>: Source port used for TCP traffic.</p>
         <p><packtxt> {{ tcp[i]["dest_port"] }}</packtxt>: Destination port used for TCP traffic.</p>
         <p><packtxt> {{ tcp[i]["seq_num"] }} = {{ tcp[i]["seq_num_decoded"] }}</packtxt>:
@@ -104,13 +103,12 @@ title and the contents to tell the user that. #}
     {% if http[i]["full_contents"]|length > 0 %}
     <button type="button" class="collapsible">HTTP Data Translated</button>
     <div class="content">
-        <!-- Fill in contents for HTTP decoding -->
         <p><packtxt>{{ http[i]["data_decoded"] }}</packtxt></p>
     </div>
     {% else %}
     <button type="button" class="collapsible">HTTP Data Translated (NONE)</button>
     <div class="content">
-        <packtxt>This packet is used for Transport layer communication (i.e. TCP)
+        <packtxt style="word-break: normal">This packet is used for Transport layer communication (i.e. TCP)
         and there is therefore no HTTP data present.</packtxt>
     </div>
     {% endif %}
