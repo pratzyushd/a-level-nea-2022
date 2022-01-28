@@ -1,4 +1,4 @@
-secret_key.txt
+deploy_key.txt
 output_files/*
 __pycache__
 venv
