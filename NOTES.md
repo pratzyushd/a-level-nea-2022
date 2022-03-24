@@ -1,23 +1,26 @@
 # Notes on Project
 
+## General Notes
+
+- Run `flask run --host=0.0.0.0` to run the server and allow anyone to access it
+Run with the `--with-threads` flag to allow for multiple users to concurrently
+access (runs multiple threads)
+
 ## To Do
-
-### Main Functionality
-
-- [ ] Collapsible sections for entire transaction
-  - [ ] Drop down for each packet, with general description in the title e.g.
-  "packet 1: SYN" (primarily only showing SYN, ACK and FIN)
-  - [ ] Drop down in each packet for the various headers
-  - [ ] Further information / translation on hover?
-    - [ ] Information about section and function, byte offset
-    - [ ] For HTTP packet data, click to switch between translated version
-        and hex representation?
-      - Requires use of JS.onclick() function?
-- [ ] Front end work
-  - [ ] Add CSS beautification
 
 ### Completed
 
+- [x] Collapsible sections for entire transaction
+  - [x] Drop down for each packet, with general description in the title e.g.
+  "packet 1: SYN" (primarily only showing SYN, ACK and FIN)
+  - [x] Drop down in each packet for the various headers
+  - [x] Further information / translation on hover?
+    - [x] Information about section and function, byte offset
+    - [x] For HTTP packet data, click to switch between translated version
+        and hex representation?
+      - Requires use of JS.onclick() function?
+- [x] Front end work
+  - [x] Add CSS beautification
 - [x] Separate sniffer start and request message
   - [x] Create method of detecting if sniffer already called by that user
   - [x] Can use session, and after button pressed change the value of a variable
@@ -40,9 +43,3 @@
           definition on ~51)
   - [x] Filter packets from where flags are (i.e. bytes 46-47 = x002, x012, x010
       for syn, syn-ack, ack until x011, x011, x010 for fin-ack, fin-ack, ack)
-
-## General Notes
-
-- Run `flask run --host=0.0.0.0` to run the server and allow anyone to access it
-Run with the `--with-threads` flag to allow for multiple users to concurrently
-access (runs multiple threads)

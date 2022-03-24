@@ -15,7 +15,7 @@ with open('secret_key.txt', 'r') as f:
 
 @app.route("/")
 def landing_page():
-    return render_template("landing_page.html") 
+    return render_template("landing_page.html")
 
 @app.route("/request", methods = ["POST","GET"])
 def first_page():
@@ -39,7 +39,7 @@ def a_level():
     file_to_find = session.get("time_value", None) + ".txt"
     with open("output_files/"+file_to_find, "r") as f:
         contents = f.read().splitlines()
-    
+
     # Go through contents of file and decode each relevant header
     eth_headers = list()
     ip_headers = list()
