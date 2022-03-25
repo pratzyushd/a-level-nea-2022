@@ -1,6 +1,18 @@
 import codecs
 
-def decode_eth_header(header_contents: str) -> dict/None:
+def decode_eth_header(header_contents: str) -> Optional[dict]:
+    """Breaks up string containing ethernet header into the various components
+    of the header. This is done with a dictionary, where the key is the
+    descriptor and the value is the section of the header that matches.
+
+    Args:
+        header_contents (str): String containing header contents
+
+    Returns:
+        Optional[dict]: Dictionary containing split headers into sections. This
+        may also be a None returned if the header length is found to not
+        be sufficient.
+    """
     if len(header_contents) >= 28:
         output_dict = {}
         output_dict["full_contents"] = header_contents
@@ -11,7 +23,19 @@ def decode_eth_header(header_contents: str) -> dict/None:
     else:
         return None
 
-def decode_ip_header(header_contents: str) -> dict/None:
+def decode_ip_header(header_contents: str) -> Optional[dict]:
+    """ Breaks up a string containing the IP header into the various sections
+    using a dictionary. This also decodes certain values (i.e. converts them
+    to the character / decimal equivalents appropriately) using a separate
+    decoding function.
+
+    Args:
+        header_contents (str): String containing header contents
+
+    Returns:
+        Optional[dict]: Dictionary containing headers split into sections. If
+        the header is invalid, this will be None.
+    """
     if len(header_contents) >= 40:
         output_dict = {}
         output_dict["full_contents"] = header_contents
@@ -36,7 +60,17 @@ def decode_ip_header(header_contents: str) -> dict/None:
     else:
         return None
 
-def decode_tcp_header(header_contents: str) -> dict/None:
+def decode_tcp_header(header_contents: str) -> Optional[dict]:
+    """Breaks up a string containing the TCP header in various sections using a
+    dictionary. Also decodes certain values using a separate decoding function.
+
+    Args:
+        header_contents (str): String containing header contents
+
+    Returns:
+        Optional[dict]: Dictionary containing header split into sections. If
+        header is invalid, this will be a None.
+    """
     if len(header_contents) >= 64:
         output_dict = {}
         output_dict["full_contents"] = header_contents
@@ -54,7 +88,17 @@ def decode_tcp_header(header_contents: str) -> dict/None:
     else:
         return None
 
-def decode_http_data(packet_contents: str) -> dict/None:
+def decode_http_data(packet_contents: str) -> Optional[dict]:
+    """Creates a dictionary containing the HTTP data and the decoded version.
+
+    Args:
+        packet_contents (str): String containing contents of packet
+
+    Returns:
+        Optional[dict]: Dictionary containing the data and the decoded form. If
+        the length of the data is 0 there is no HTTP data in the packet, so the
+        return is None.
+    """
     if len(packet_contents) > 0:
         output_dict = {}
         output_dict["full_contents"] = packet_contents
@@ -66,7 +110,19 @@ def decode_http_data(packet_contents: str) -> dict/None:
     else:
         return None
 
-def decode_hex(data: str, text:bool = False) -> int/str:
+def decode_hex(data: str, text:bool = False) -> Union[int,str]:
+    """Function to decode an input hex string into either the integer
+    equivalent or the text equivalent depending on the flag passed.
+
+    Args:
+        data (str): String of hex data
+        text (bool, optional): Flag to denote whether input is text or not.
+        Defaults to False.
+
+    Returns:
+        Union[int,str]: Return is either the integer equivalent or the string
+        containing the text equivalent of the given hex string.
+    """
     decoded = None
     if text:
         data = data.hex()
@@ -76,6 +132,15 @@ def decode_hex(data: str, text:bool = False) -> int/str:
     return decoded
 
 def decode_ip_address(hex_string: str) -> str:
+    """Function to decode IP address from hexadecimal representation to the
+    human friendly format with periods separating octets e.g. 127.0.0.1
+
+    Args:
+        hex_string (str): hexadecimal representation
+
+    Returns:
+        str: human friendly octet format of hexadecimal representation
+    """
     chunks = [hex_string[i:i+2] for i in range(0,len(hex_string),2)]
     decoded_list = [str(int(i, 16)) for i in chunks]
     decoded_string = ".".join(decoded_list)

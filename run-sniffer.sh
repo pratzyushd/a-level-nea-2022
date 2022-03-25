@@ -6,13 +6,41 @@ import binascii
 
 # =============== SUBROUTINES TO SPLIT HEADERS ================================
 
-def split_eth_header(contents: list) -> str:
+def split_eth_header(contents: str) -> str:
+    """Take the full string containing the packet contents and split off the
+    ethernet header from it.
+
+    Args:
+        contents (str): string containing the full contents of the packet
+
+    Returns:
+        str: string of only the ethernet header
+    """
     return contents[0:28]
 
-def split_ip_header(contents: list) -> str:
+def split_ip_header(contents: str) -> str:
+    """Take the full string containing the packet contents and split off the
+    IP header from it.
+
+    Args:
+        contents (str): string containing the full contents of the packet
+
+    Returns:
+        str: string of only the IP header
+    """
     return contents[28:68]
 
-def split_tcp_header(contents: list) -> str:
+def split_tcp_header(contents: str) -> str:
+    """Take full string containing packet contents and split off the TCP header
+    from it. This function also takes into account SYN packets, which have a
+    longer header than other packets, and so adjust the output accordingly.
+
+    Args:
+        contents (str): string containing the full contents of the packet
+
+    Returns:
+        str: string of only the TCP header
+    """
     # If the header is a 40 byte header (i.e. SYN packet), account for this and
     # don't put the additional data as the HTTP data
     if contents[92] == "a":
@@ -20,7 +48,17 @@ def split_tcp_header(contents: list) -> str:
     else:
         return contents[68:132]
 
-def split_http_data(contents: list) -> str:
+def split_http_data(contents: str) -> str:
+    """Take full string containing packet contents and split of the HTTP
+    request data from it. This function, as with the TCP header one, takes into
+    account the increased length of SYN packets.
+
+    Args:
+        contents (str): string containing full contents of the packet
+
+    Returns:
+        str: string of only the HTTP data
+    """
     # As above, if TCP header is 40 bytes (i.e. SYN) there is no HTTP data
     if contents[92] == "a":
         return ""

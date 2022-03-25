@@ -8,15 +8,20 @@ import subs
 # ============== FLASK INITIALISATION =========================================
 
 app = Flask(__name__)
+# Get the secret key from a text file that is present. Secret keys are used for
+# encrypting the session.
 with open('secret_key.txt', 'r') as f:
     app.secret_key = f.readline().strip()
 
 # ============== FLASK ROUTES =================================================
 
+# Route for the landing page i.e. the first page you see when you land on the
+# website.
 @app.route("/")
 def landing_page() -> None:
     return render_template("landing_page.html")
 
+# The page that makes the request i.e. starts the sniffer
 @app.route("/request", methods = ["POST","GET"])
 def first_page():
     current_time = str(time.time_ns())
