@@ -6,13 +6,13 @@ import binascii
 
 # =============== SUBROUTINES TO SPLIT HEADERS ================================
 
-def split_eth_header(contents):
+def split_eth_header(contents: list) -> str:
     return contents[0:28]
 
-def split_ip_header(contents):
+def split_ip_header(contents: list) -> str:
     return contents[28:68]
 
-def split_tcp_header(contents):
+def split_tcp_header(contents: list) -> str:
     # If the header is a 40 byte header (i.e. SYN packet), account for this and
     # don't put the additional data as the HTTP data
     if contents[92] == "a":
@@ -20,7 +20,7 @@ def split_tcp_header(contents):
     else:
         return contents[68:132]
 
-def split_http_data(contents):
+def split_http_data(contents: list) -> str:
     # As above, if TCP header is 40 bytes (i.e. SYN) there is no HTTP data
     if contents[92] == "a":
         return ""

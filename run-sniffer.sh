@@ -6,13 +6,13 @@ import binascii
 
 # =============== SUBROUTINES TO SPLIT HEADERS ================================
 
-def split_eth_header(contents):
+def split_eth_header(contents: list) -> str:
     return contents[0:28]
 
-def split_ip_header(contents):
+def split_ip_header(contents: list) -> str:
     return contents[28:68]
 
-def split_tcp_header(contents):
+def split_tcp_header(contents: list) -> str:
     # If the header is a 40 byte header (i.e. SYN packet), account for this and
     # don't put the additional data as the HTTP data
     if contents[92] == "a":
@@ -20,7 +20,7 @@ def split_tcp_header(contents):
     else:
         return contents[68:132]
 
-def split_http_data(contents):
+def split_http_data(contents: list) -> str:
     # As above, if TCP header is 40 bytes (i.e. SYN) there is no HTTP data
     if contents[92] == "a":
         return ""
@@ -32,15 +32,15 @@ def split_http_data(contents):
 # Identify file name based on time passed in through the terminal
 parser = ap.ArgumentParser()
 parser.add_argument("-f", "--file-name", type=str, help="File name for output")
-parser.add_argument("-ip", "--ip-address", type=str, help="IP address to \
-        filter for when running sniffer")
+parser.add_argument("-ip", "--ip-address", type=str, help="IP address to "
+        "filter for when running sniffer")
 args = parser.parse_args()
 file_name = args.file_name+".txt"
 
 # Generate hex equivalent of IP address to filter for
 raw_ip = args.ip_address
-# Uses split function to split IP address into octets. Then use the map function
-# and f strings to convert it into the 8 digit hex equivalent address
+# Uses split function to split IP address into octets. Then use the map
+# function and f strings to convert it into the 8 digit hex equivalent address
 hex_ip_to_filter = ''.join(f"{i:02x}" for i in map(int,raw_ip.split(".")))
 print(hex_ip_to_filter)
 
@@ -61,7 +61,7 @@ data_list = list()
 # detected by the TCP flags, specifically the SYN and FIN flags for the start
 # and end of the transaction.
 # Also filters out anything that isn't going to / coming from the correct IP
-# address. 
+# address.
 transaction_sniffing_complete = False
 capturing_enabled = False
 tcp_flag_list = list()
@@ -95,7 +95,7 @@ while not transaction_sniffing_complete:
 with open(r"output_files/"+file_name, "w") as f:
     num_to_write = len(eth_header_list)
     # Entire header written to file, as processing is done by the subroutines
-    # in subs.py file 
+    # in subs.py file
     for i in range(0, num_to_write):
         print(eth_header_list[i], file=f)
         print(ip_header_list[i], file=f)

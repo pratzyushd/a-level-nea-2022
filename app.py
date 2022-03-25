@@ -14,7 +14,7 @@ with open('secret_key.txt', 'r') as f:
 # ============== FLASK ROUTES =================================================
 
 @app.route("/")
-def landing_page():
+def landing_page() -> None:
     return render_template("landing_page.html")
 
 @app.route("/request", methods = ["POST","GET"])
@@ -31,11 +31,11 @@ def first_page():
     return render_template("request.html")
 
 @app.route('/loading')
-def load_data():
+def load_data() -> None:
     return render_template("loading.html")
 
 @app.route("/a-level")
-def a_level():
+def a_level() -> None:
     file_to_find = session.get("time_value", None) + ".txt"
     with open("output_files/"+file_to_find, "r") as f:
         contents = f.read().splitlines()

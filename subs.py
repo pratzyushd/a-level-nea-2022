@@ -1,6 +1,6 @@
 import codecs
 
-def decode_eth_header(header_contents):
+def decode_eth_header(header_contents: str) -> dict/None:
     if len(header_contents) >= 28:
         output_dict = {}
         output_dict["full_contents"] = header_contents
@@ -11,7 +11,7 @@ def decode_eth_header(header_contents):
     else:
         return None
 
-def decode_ip_header(header_contents):
+def decode_ip_header(header_contents: str) -> dict/None:
     if len(header_contents) >= 40:
         output_dict = {}
         output_dict["full_contents"] = header_contents
@@ -36,7 +36,7 @@ def decode_ip_header(header_contents):
     else:
         return None
 
-def decode_tcp_header(header_contents):
+def decode_tcp_header(header_contents: str) -> dict/None:
     if len(header_contents) >= 64:
         output_dict = {}
         output_dict["full_contents"] = header_contents
@@ -54,7 +54,7 @@ def decode_tcp_header(header_contents):
     else:
         return None
 
-def decode_http_data(packet_contents):
+def decode_http_data(packet_contents: str) -> dict/None:
     if len(packet_contents) > 0:
         output_dict = {}
         output_dict["full_contents"] = packet_contents
@@ -66,7 +66,7 @@ def decode_http_data(packet_contents):
     else:
         return None
 
-def decode_hex(data, text=False):
+def decode_hex(data: str, text:bool = False) -> int/str:
     decoded = None
     if text:
         data = data.hex()
@@ -75,7 +75,7 @@ def decode_hex(data, text=False):
         decoded = int(data, 16)
     return decoded
 
-def decode_ip_address(hex_string):
+def decode_ip_address(hex_string: str) -> str:
     chunks = [hex_string[i:i+2] for i in range(0,len(hex_string),2)]
     decoded_list = [str(int(i, 16)) for i in chunks]
     decoded_string = ".".join(decoded_list)
