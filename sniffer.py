@@ -70,7 +70,7 @@ def split_http_data(contents: str) -> str:
 # Identify file name based on time passed in through the terminal
 parser = ap.ArgumentParser()
 parser.add_argument("-f", "--file-name", type=str, help="File name for output")
-parser.add_argument("-ip", "--ip-address", type=str, help="IP address to "
+parser.add_argument("-a", "--address", type=str, help="IPv4 address to "
         "filter for when running sniffer")
 args = parser.parse_args()
 file_name = args.file_name+".txt"
