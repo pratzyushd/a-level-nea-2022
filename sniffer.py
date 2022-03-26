@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 import socket
-import os
 import argparse as ap
 import binascii
 
@@ -76,11 +75,10 @@ args = parser.parse_args()
 file_name = args.file_name+".txt"
 
 # Generate hex equivalent of IP address to filter for
-raw_ip = args.ip_address
+raw_ip = args.address
 # Uses split function to split IP address into octets. Then use the map
 # function and f strings to convert it into the 8 digit hex equivalent address
 hex_ip_to_filter = ''.join(f"{i:02x}" for i in map(int,raw_ip.split(".")))
-print(hex_ip_to_filter)
 
 
 # =================== MAIN SNIFFER PROGRAM ====================================
