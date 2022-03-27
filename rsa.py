@@ -138,7 +138,6 @@ def encrypt_message(prime_1: int, prime_2: int, message: str) -> str:
     # If the plaintext number becomes too big, truncate it
     elif len(message) > 100:
         message = message[0:100]
-    message = message.upper()
     # Create a large integer representation of the number
     plaintext = "".join([str(ord(x)) for x in message])
     # Convert to an integer for mathematical operations
@@ -167,5 +166,32 @@ def decrypt_message(prime_1: int, prime_2: int, message: str) -> str:
     private_key = pow(other_prime, -1, carm_tot)
     plaintext = pow(ciphertext, private_key, modulus)
     plaintext = str(plaintext)
-    message = [chr(int(plaintext[x:x+2])) for x in range(0,len(plaintext), 2)]
-    return "".join(message)
+
+    # The following lines decode the ASCII into plaintext
+    fully_decoded = False
+    message_list = list()
+    i = 0
+    while not fully_decoded:
+        # If the character code begins with a 1, it must be a three digit lower
+        # case character (or else it is a control code, which is impossible to
+        # input in the context of the program).
+        if plaintext[i] == "1":
+            message_list.append(int(plaintext[i:i+3]))
+            i += 3
+        # If the first digit isn't a 1, it is a 2 digit code
+        else:
+            message_list.append(int(plaintext[i:i+2]))
+            i += 2
+        # Terminating condition for the while loop
+        if i >= len(plaintext):
+            fully_decoded = True
+    # Covert list of character codes back into the characters and create a
+    # final output string from them
+    message = "".join([chr(x) for x in message_list])
+    return message
+
+prime_1 = get_prime()
+prime_2 = get_prime()
+encrypted = encrypt_message(prime_1, prime_2, "Hello World")
+decrypted = decrypt_message(prime_1, prime_2, encrypted)
+print(decrypted)
