@@ -189,9 +189,3 @@ def decrypt_message(prime_1: int, prime_2: int, message: str) -> str:
     # final output string from them
     message = "".join([chr(x) for x in message_list])
     return message
-
-prime_1 = get_prime()
-prime_2 = get_prime()
-encrypted = encrypt_message(prime_1, prime_2, "Hello World")
-decrypted = decrypt_message(prime_1, prime_2, encrypted)
-print(decrypted)
