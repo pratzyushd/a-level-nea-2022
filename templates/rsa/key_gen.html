@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+
+<head>
+
+</head>
+
+<title>Key Generation</title>
+
+<h1>Generating RSA Keys</h1>
+
+<h2>Primes Generated</h2>
+
+<p style="word-break: break-all;"><i>p</i> = {{ prime_1 }}</p>
+<p style="word-break: break-all;"><i>q</i> = {{ prime_2 }}</p>
+
+<p>The two keys that need to be generated are done so using some advanced mathematics. The first
+    thing to do is multiply our two prime numbers together, <i>p</i> and <i>q</i> to give us the
+    value <i>n</i>. To create the other half of the public key, we need a specific value
+    <i>e</i>. This is usually set to be 65,537 for efficiency.
+</p>
+<p>Our private key is generated with a slightly different process. We need to find the Carmichael's
+    Totient of <i>n</i> (<i>&lambda;(n)</i>). This is equal to the <i>lcm((p-1)(q-1))</i>. We then
+    calculate the decryption key <i>d</i> as being <i>1/e mod &lambda;(n)</i>, which is using the
+    inverse modulo operation.
+</p>
+
+
+<div class='container'>
+    <a href='/rsa/message'>Go To Next Page</a>
+</div>

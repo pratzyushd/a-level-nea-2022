@@ -4,6 +4,7 @@ from flask import (Flask, render_template, redirect, url_for, session, request
 import subprocess as sc
 import time
 import subs
+import rsa
 
 # ============== FLASK INITIALISATION =========================================
 
@@ -23,7 +24,7 @@ def landing_page() -> None:
 
 # The page that makes the request i.e. starts the sniffer
 @app.route("/request", methods = ["POST","GET"])
-def first_page():
+def first_page() -> None:
     current_time = str(time.time_ns())
     client_ip = request.remote_addr
     # Use subprocess library to call the sniffer script
@@ -60,3 +61,33 @@ def a_level() -> None:
     # Pass the various headers and packet data to the template
     return render_template("a-level.html", eth = eth_headers, ip = ip_headers,
             tcp = tcp_headers, http = http_data, client_ip = client_ip)
+
+@app.route('/rsa/intro')
+def rsa_intro() -> None:
+    session["prime_1"] = rsa.get_prime()
+    session["prime_2"] = rsa.get_prime()
+    return render_template("rsa/introduction.html")
+
+@app.route("/rsa/prime-gen")
+def rsa_prime_generation() -> None:
+    return render_template("/rsa/key_gen.html", prime_1 = session["prime_1"],
+    prime_2 = session["prime_2"])
+
+@app.route("/rsa/message", methods = ["POST", "GET"])
+def rsa_message() -> "None":
+    if request.method == "POST":
+        prime_1 = session["prime_1"]
+        prime_2 = session["prime_2"]
+        message = request.form["message"]
+        encrypted = rsa.encrypt_message(prime_1, prime_2, message)
+        session["ciphertext"] = encrypted
+        decrypted = rsa.decrypt_message(prime_1, prime_2, encrypted)
+        session["plaintext"] = decrypted
+        return redirect(url_for("rsa_encrypt_decrypt"))
+    else:
+        return render_template("/rsa/message.html")
+
+@app.route("/rsa/encryption-decryption")
+def rsa_encrypt_decrypt() -> None:
+    return render_template("/rsa/encrypt-decrypt.html",
+    plaintext = session["plaintext"], ciphertext = session["ciphertext"])

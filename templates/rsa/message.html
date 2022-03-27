@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+
+<head>
+
+</head>
+
+<title>Message Creation</title>
+
+<h1>Taking The Message</h1>
+
+<p>To generate the encrypted message, we take the plaintext message <i>m</i> and carry out
+    the mathematical operation <i>c = m<sup>e</sup> mod n</i>, where <i>c</i> is the final
+    ciphertext.
+</p>
+
+<p>Decryption follows a similar process, with the operation <i>m = c<sup>d</sup> mod n</i>
+    to get back the representation of the message.
+</p>
+
+<div class="container">
+    <p>Enter message below: <i>Note: message will be truncated if too long</i></p>
+    <form action="/rsa/message" method="post">
+        <label for="message">Message</label>
+        <input name="message" id="message" required>
+        <input type="submit" value="Submit message">
+    </form>
+</div>

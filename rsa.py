@@ -135,11 +135,12 @@ def encrypt_message(prime_1: int, prime_2: int, message: str) -> str:
     # Validation: don't allow empty message to be passed
     if len(message) < 1:
         return None
+    # If the plaintext number becomes too big, truncate it
+    elif len(message) > 100:
+        message = message[0:100]
+    message = message.upper()
     # Create a large integer representation of the number
     plaintext = "".join([str(ord(x)) for x in message])
-    # If the plaintext number becomes too big, truncate it
-    if len(plaintext) > 100:
-        plaintext = plaintext[0:100]
     # Convert to an integer for mathematical operations
     plaintext = int(plaintext)
     ciphertext = pow(plaintext, other_prime, modulus)

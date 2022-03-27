@@ -1,6 +1,7 @@
 import codecs
+from typing import Union
 
-def decode_eth_header(header_contents: str) -> Optional[dict]:
+def decode_eth_header(header_contents: str) -> Union[dict,None]:
     """Breaks up string containing ethernet header into the various components
     of the header. This is done with a dictionary, where the key is the
     descriptor and the value is the section of the header that matches.
@@ -9,7 +10,7 @@ def decode_eth_header(header_contents: str) -> Optional[dict]:
         header_contents (str): String containing header contents
 
     Returns:
-        Optional[dict]: Dictionary containing split headers into sections. This
+        Union[dict,None] : Dictionary containing split headers into sections. This
         may also be a None returned if the header length is found to not
         be sufficient.
     """
@@ -23,7 +24,7 @@ def decode_eth_header(header_contents: str) -> Optional[dict]:
     else:
         return None
 
-def decode_ip_header(header_contents: str) -> Optional[dict]:
+def decode_ip_header(header_contents: str) -> Union[dict,None]:
     """ Breaks up a string containing the IP header into the various sections
     using a dictionary. This also decodes certain values (i.e. converts them
     to the character / decimal equivalents appropriately) using a separate
@@ -33,7 +34,7 @@ def decode_ip_header(header_contents: str) -> Optional[dict]:
         header_contents (str): String containing header contents
 
     Returns:
-        Optional[dict]: Dictionary containing headers split into sections. If
+        Union[dict,None]: Dictionary containing headers split into sections. If
         the header is invalid, this will be None.
     """
     if len(header_contents) >= 40:
@@ -60,7 +61,7 @@ def decode_ip_header(header_contents: str) -> Optional[dict]:
     else:
         return None
 
-def decode_tcp_header(header_contents: str) -> Optional[dict]:
+def decode_tcp_header(header_contents: str) -> Union[dict,None]:
     """Breaks up a string containing the TCP header in various sections using a
     dictionary. Also decodes certain values using a separate decoding function.
 
@@ -68,7 +69,7 @@ def decode_tcp_header(header_contents: str) -> Optional[dict]:
         header_contents (str): String containing header contents
 
     Returns:
-        Optional[dict]: Dictionary containing header split into sections. If
+        Union[dict,None]: Dictionary containing header split into sections. If
         header is invalid, this will be a None.
     """
     if len(header_contents) >= 64:
@@ -88,14 +89,14 @@ def decode_tcp_header(header_contents: str) -> Optional[dict]:
     else:
         return None
 
-def decode_http_data(packet_contents: str) -> Optional[dict]:
+def decode_http_data(packet_contents: str) -> Union[dict,None]:
     """Creates a dictionary containing the HTTP data and the decoded version.
 
     Args:
         packet_contents (str): String containing contents of packet
 
     Returns:
-        Optional[dict]: Dictionary containing the data and the decoded form. If
+        Union[dict,None]: Dictionary containing the data and the decoded form. If
         the length of the data is 0 there is no HTTP data in the packet, so the
         return is None.
     """
