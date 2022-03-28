@@ -87,10 +87,10 @@ hex_ip_to_filter = ''.join(f"{i:02x}" for i in map(int,raw_ip.split(".")))
 sock = socket.socket(socket.AF_PACKET, socket.SOCK_RAW, socket.htons(0x0800))
 
 # Create lists to store the header strings
-eth_header_list = list()
-ip_header_list = list()
-tcp_header_list = list()
-data_list = list()
+eth_header_list = []
+ip_header_list = []
+tcp_header_list = []
+data_list = []
 
 # Receiving data from raw socket
 # This continues sniffing until the whole transaction is completed. This is
@@ -100,7 +100,7 @@ data_list = list()
 # address.
 transaction_sniffing_complete = False
 capturing_enabled = False
-tcp_flag_list = list()
+tcp_flag_list = []
 while not transaction_sniffing_complete:
     raw = sock.recvfrom(65536)[0]
     # Makes use of the binascii lib to turn the bytes object into a parsable

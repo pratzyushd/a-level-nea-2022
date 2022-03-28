@@ -51,10 +51,10 @@ def a_level() -> None:
         contents = f.read().splitlines()
 
     # Go through contents of file and decode each relevant header
-    eth_headers = list()
-    ip_headers = list()
-    tcp_headers = list()
-    http_data = list()
+    eth_headers = []
+    ip_headers = []
+    tcp_headers = []
+    http_data = []
     for i in range (0, len(contents), 4):
         eth_headers.append(decoding.decode_eth_header(contents[i]))
         ip_headers.append(decoding.decode_ip_header(contents[i+1]))

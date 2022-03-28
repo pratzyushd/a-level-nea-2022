@@ -169,7 +169,7 @@ def decrypt_message(prime_1: int, prime_2: int, message: str) -> str:
 
     # The following lines decode the ASCII into plaintext
     fully_decoded = False
-    message_list = list()
+    message_list = []
     i = 0
     while not fully_decoded:
         # If the character code begins with a 1, it must be a three digit lower
