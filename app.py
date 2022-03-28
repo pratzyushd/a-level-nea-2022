@@ -3,7 +3,7 @@ from flask import (Flask, render_template, redirect, url_for, session, request
         )
 import subprocess as sc
 import time
-import subs
+import decoding
 import rsa
 
 # ============== FLASK INITIALISATION =========================================
@@ -52,10 +52,10 @@ def a_level() -> None:
     tcp_headers = list()
     http_data = list()
     for i in range (0, len(contents), 4):
-        eth_headers.append(subs.decode_eth_header(contents[i]))
-        ip_headers.append(subs.decode_ip_header(contents[i+1]))
-        tcp_headers.append(subs.decode_tcp_header(contents[i+2]))
-        http_data.append(subs.decode_http_data(contents[i+3]))
+        eth_headers.append(decoding.decode_eth_header(contents[i]))
+        ip_headers.append(decoding.decode_ip_header(contents[i+1]))
+        tcp_headers.append(decoding.decode_tcp_header(contents[i+2]))
+        http_data.append(decoding.decode_http_data(contents[i+3]))
 
     client_ip = session["client_ip"]
     # Pass the various headers and packet data to the template
