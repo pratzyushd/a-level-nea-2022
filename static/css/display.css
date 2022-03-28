@@ -66,3 +66,21 @@ packtxt {
     overflow: hidden;
     z-index: 1;
 }
+
+.button {
+    background-color: #ffffff;
+    border: 2px solid #40aa44;
+    color: #000000;
+    padding: 16px 32px;
+    text-align: center;
+    display: inline-block;
+    font-size: 20px;
+    margin: 4px 2px;
+    transition-duration: 0.2s;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: #40aa44;
+    color: white;
+}
