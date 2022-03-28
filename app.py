@@ -72,8 +72,8 @@ def rsa_intro() -> None:
     return render_template("rsa/introduction.html")
 
 # Generating prime numbers for RSA encryption functionality
-@app.route("/rsa/prime-gen")
-def rsa_prime_generation() -> None:
+@app.route("/rsa/key-gen")
+def rsa_key_generation() -> None:
     session["prime_1"] = rsa.get_prime()
     session["prime_2"] = rsa.get_prime()
     return render_template("/rsa/key_gen.html", prime_1 = session["prime_1"],
