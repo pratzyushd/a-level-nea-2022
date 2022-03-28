@@ -69,13 +69,13 @@ def a_level() -> None:
 # Introduction page for RSA encryption functionality
 @app.route('/rsa/intro')
 def rsa_intro() -> None:
-    session["prime_1"] = rsa.get_prime()
-    session["prime_2"] = rsa.get_prime()
     return render_template("rsa/introduction.html")
 
 # Generating prime numbers for RSA encryption functionality
 @app.route("/rsa/prime-gen")
 def rsa_prime_generation() -> None:
+    session["prime_1"] = rsa.get_prime()
+    session["prime_2"] = rsa.get_prime()
     return render_template("/rsa/key_gen.html", prime_1 = session["prime_1"],
     prime_2 = session["prime_2"])
 
