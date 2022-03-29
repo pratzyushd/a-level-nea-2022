@@ -124,14 +124,11 @@ def rsa_message() -> "None":
         prime_1 = session["prime_1"]
         prime_2 = session["prime_2"]
         message = request.form["message"]
-        if len(message) > 0:
-            encrypted = rsa.encrypt_message(prime_1, prime_2, message)
-            session["ciphertext"] = encrypted
-            decrypted = rsa.decrypt_message(prime_1, prime_2, encrypted)
-            session["plaintext"] = decrypted
-            return redirect(url_for("rsa_encrypt_decrypt"))
-        else:
-            return render_template("/rsa/message.html")
+        encrypted = rsa.encrypt_message(prime_1, prime_2, message)
+        session["ciphertext"] = encrypted
+        decrypted = rsa.decrypt_message(prime_1, prime_2, encrypted)
+        session["plaintext"] = decrypted
+        return redirect(url_for("rsa_encrypt_decrypt"))
     else:
         # Try except block. If there are no prime number values in the session,
         # user hasn't visited the key generation page, so make them visit that
