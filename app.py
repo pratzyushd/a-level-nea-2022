@@ -104,6 +104,13 @@ def a_level() -> None:
             tcp_headers.append(decoding.decode_tcp_header(contents[i+2]))
             http_data.append(decoding.decode_http_data(contents[i+3]))
 
+        # Check if any of the headers are unfilled (i.e. some error with
+        # sniffer output file)
+        for i in range(0, len(eth_headers)):
+            if (eth_headers[i] is None or ip_headers[i] is None or
+            tcp_headers[i] is None):
+                return redirect(url_for("error_page"))
+
         client_ip = session["client_ip"]
         # Pass the various headers and packet data to the template
         return render_template("a-level.html", eth = eth_headers,
