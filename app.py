@@ -1,6 +1,5 @@
 # ============== ALL IMPORTS ==================================================
-from flask import (Flask, render_template, redirect, url_for, session, request
-        )
+from flask import (Flask, render_template, redirect, url_for, session, request)
 import subprocess as sc
 import time
 # These are two Python files I wrote with their own functionality, and are not

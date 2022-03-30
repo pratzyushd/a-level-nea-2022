@@ -10,8 +10,8 @@ def decode_eth_header(header_contents: str) -> Optional[dict]:
         header_contents (str): String containing header contents
 
     Returns:
-        Optional[dict] : Dictionary containing split headers into sections. This
-        may also be a None returned if the header length is found to not
+        Optional[dict] : Dictionary containing split headers into sections.
+        This may also be a None returned if the header length is found to not
         be sufficient.
     """
     if len(header_contents) >= 28:
