@@ -17,6 +17,12 @@ with open('secret_key.txt', 'r') as f:
 
 # ============== FLASK ROUTES =================================================
 
+# Route for the error page i.e. the page that you see if there is some error
+# with the sniffer
+@app.route("/error")
+def error_page() -> None:
+    return render_template("error_page.html")
+
 # Route for the landing page i.e. the first page you see when you land on the
 # website.
 @app.route("/", methods = ["POST", "GET"])
@@ -43,8 +49,8 @@ def request_page() -> None:
         current_time = str(time.time_ns())
         client_ip = request.remote_addr
         # Use subprocess library to call the sniffer script
-        output_from_sniffer_call = sc.Popen(["sudo", "./run-sniffer.sh", "-f",
-            current_time, "-a", client_ip], stdout = sc.PIPE, stderr = sc.PIPE)
+        # output_from_sniffer_call = sc.Popen(["sudo", "./run-sniffer.sh", "-f",
+        #     current_time, "-a", client_ip], stdout = sc.PIPE, stderr = sc.PIPE)
         session["time_value"] = current_time
         session["client_ip"] = client_ip
         time.sleep(0.25)
@@ -72,17 +78,21 @@ def a_level() -> None:
     # contents of a transaction without having actually initialised the sniffer
     # to begin with.
     try:
+        # If the sniffer hasn't been called yet
         if not session["sniffer_called"]:
             return redirect(url_for("landing_page"))
+        # Open the file specified by the file name
+        else:
+            file_to_find = session.get("time_value", None) + ".txt"
+            with open("output_files/"+file_to_find, "r") as f:
+                contents = f.read().splitlines()
     except KeyError:
         session["sniffer_called"] = False
         return redirect(url_for("landing_page"))
+    except FileNotFoundError:
+        return redirect(url_for("error_page"))
     # If the user has already called the sniffer, execute this block
     else:
-        file_to_find = session.get("time_value", None) + ".txt"
-        with open("output_files/"+file_to_find, "r") as f:
-            contents = f.read().splitlines()
-
         # Go through contents of file and decode each relevant header
         eth_headers = []
         ip_headers = []
