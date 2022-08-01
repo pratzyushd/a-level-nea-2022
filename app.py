@@ -49,7 +49,7 @@ def request_page() -> None:
         current_time = str(time.time_ns())
         client_ip = request.remote_addr
         # Use subprocess library to call the sniffer script
-        output_from_sniffer_call = sc.Popen(["sudo", "./run-sniffer.sh", "-f",
+        sc.Popen(["sudo", "./run-sniffer.sh", "-f",
             current_time, "-a", client_ip], stdout = sc.PIPE, stderr = sc.PIPE)
         session["time_value"] = current_time
         session["client_ip"] = client_ip
